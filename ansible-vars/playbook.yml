@@ -1,0 +1,20 @@
+- name: Test variable sources
+  hosts: all
+  gather_facts: no
+
+  vars:
+    from_playbook: "This is defined in the playbook"
+
+  tasks:
+    - name: Show playbook var
+      debug:
+        var: from_playbook
+
+    - name: Show group var
+      debug:
+        var: app_name
+
+    - name: Show host var
+      debug:
+        var: env
+

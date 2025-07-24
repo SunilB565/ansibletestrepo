@@ -1,0 +1,13 @@
+- name: chekcing facts
+  hosts: servers
+  become: yes
+
+  tasks:
+    - name: Show OS Family
+      debug:
+        var: ansible_facts['os_family']
+
+    - name: Show Default IPv4 Address
+      debug:
+        var: ansible_facts['default_ipv4']['address']
+

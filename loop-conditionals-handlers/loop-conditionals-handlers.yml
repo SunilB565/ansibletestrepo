@@ -1,0 +1,74 @@
+- name: Ansible Loops, Conditionals, Handlers Demo
+  hosts: servers
+  become: yes
+
+  vars:
+    users_list:
+      - alice
+      - bob
+    packages_dict:
+      git: present
+      curl: latest
+      nginx: present
+ 
+
+  tasks:
+
+    # Loop with with_items (list)
+    - name: Create multiple users
+      user:
+        name: "{{ item }}"
+        state: present
+      with_items: "{{ users_list }}"
+
+    # Loop with loop (modern way)
+    - name: Create multiple temp files
+      file:
+        path: "/tmp/{{ item }}"
+        state: touch
+      loop:
+        - file1.txt
+        - file2.txt
+
+    # Loop with with_dict (key-value)
+    - name: Install multiple packages with states
+      package:
+        name: "{{ item.key }}"
+        state: "{{ item.value }}"
+      with_dict: "{{ packages_dict }}"
+
+    # Register and use debug
+    - name: Check uptime
+      command: uptime
+      register: uptime_result
+
+    - name: Show uptime output
+      debug:
+        var: uptime_result.stdout
+
+    # Conditional execution
+    - name: Restart nginx only if it's installed
+      service:
+        name: nginx
+        state: restarted
+      when: "'nginx' in packages_dict"
+
+
+
+    - name: Import the importandincludetask.yml
+      import_tasks: ../importanincludetask/main.yml
+
+
+    # Notify handler
+    - name: Touch a file and notify handler
+      file:
+        path: /tmp/trigger.txt
+        state: touch
+      notify: Restart Example Service
+
+  handlers:
+    - name: Restart Example Service
+      listen: Restart Example Service
+      debug:
+        msg: "Handler triggered: Restarting service (example)"
+

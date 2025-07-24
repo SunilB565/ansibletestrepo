@@ -1,0 +1,7 @@
+- name: Static task import (import_tasks)
+  import_tasks: tasks/hello.yml
+
+- name: Dynamic task include (include_tasks)
+  include_tasks: tasks/hello.yml
+  when: "'yes' == 'yes'"  # Conditional include
+

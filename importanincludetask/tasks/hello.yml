@@ -1,0 +1,4 @@
+- name: Print Hello message
+  debug:
+    msg: "Hello from included task!"
+

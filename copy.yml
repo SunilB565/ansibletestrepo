@@ -1,0 +1,12 @@
+- name: copy command
+  hosts: servers
+  become: yes
+
+  tasks:
+  - name: Copy file
+    copy:
+      src: ./index.html
+      dest: /var/index.html
+      owner: root
+      group: root
+      mode: '0644'

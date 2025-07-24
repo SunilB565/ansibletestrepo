@@ -1,0 +1,10 @@
+- name: dir command
+  hosts: servers
+  become: yes
+
+  tasks:
+  - name: dir file
+    file:
+      path: /opt/myapp
+      state: directory
+      mode: '0755'
